@@ -1,0 +1,81 @@
+@article{Strang1968,
+  author  = {Strang, Gilbert},
+  title   = {On the Construction and Comparison of Difference Schemes},
+  journal = {SIAM Journal on Numerical Analysis},
+  year    = {1968},
+  volume  = {5},
+  number  = {3},
+  pages   = {506--517},
+  doi     = {10.1137/0705041},
+  url     = {https://doi.org/10.1137/0705041},
+  keywords = {operator splitting, Strang splitting, numerical analysis},
+  comment = {Strang splitting 二阶收敛理论阅读建议（推荐阅读顺序）：
+    1. Strang (1968)：对称分裂的原始构造，理解局部三阶误差与全局二阶收敛的关系。
+    2. Jahnke--Lubich (2000) [重点]：无界算子的 Strang 误差估计；关注交换子与解的正则性。
+    3. Hansen--Ostermann (2009) [重点]：半群框架下的抽象收敛理论；关注时间误差估计的空间离散一致性。
+    4. Besse--Bidégaray--Descombes (2002) [重点]：非线性 Schrödinger 方程；学习非线性流映射及二阶收敛证明。
+    5. Descombes--Thalhammer (2010)：精确局部误差表示，研究无界算子和参数依赖。
+    6. Einkemmer--Ostermann (2015)：非齐次 Dirichlet 边界引起的降阶和修正方法。
+    后续研究问题：非线性分裂的局部三阶误差条件；无界算子正则性与稳定性；时间误差常数对有限元网格尺寸 h 的一致性；边界条件引起的降阶；全离散误差估计。
+    目标示例：在明确的假设下证明 ||u(t_n)-u_h^n|| <= C(tau^2 + h^(r+1))，其中 C 与 tau、h 无关。}
+}
+
+@article{JahnkeLubich2000,
+  author  = {Jahnke, Tobias and Lubich, Christian},
+  title   = {Error Bounds for Exponential Operator Splittings},
+  journal = {BIT Numerical Mathematics},
+  year    = {2000},
+  volume  = {40},
+  number  = {4},
+  pages   = {735--744},
+  doi     = {10.1023/A:1022396519656},
+  url     = {https://doi.org/10.1023/A:1022396519656}
+}
+
+@article{BesseBidegarayDescombes2002,
+  author  = {Besse, Christophe and Bid{\'e}garay, Brigitte and Descombes, St{\'e}phane},
+  title   = {Order Estimates in Time of Splitting Methods for the Nonlinear {Schr{\"o}dinger} Equation},
+  journal = {SIAM Journal on Numerical Analysis},
+  year    = {2002},
+  volume  = {40},
+  number  = {1},
+  pages   = {26--40},
+  doi     = {10.1137/S0036142900381497},
+  url     = {https://doi.org/10.1137/S0036142900381497}
+}
+
+@article{HansenOstermann2009,
+  author  = {Hansen, Eskil and Ostermann, Alexander},
+  title   = {Exponential Splitting for Unbounded Operators},
+  journal = {Mathematics of Computation},
+  year    = {2009},
+  volume  = {78},
+  number  = {267},
+  pages   = {1485--1496},
+  doi     = {10.1090/S0025-5718-09-02213-3},
+  url     = {https://doi.org/10.1090/S0025-5718-09-02213-3}
+}
+
+@article{DescombesThalhammer2010,
+  author  = {Descombes, St{\'e}phane and Thalhammer, Mechthild},
+  title   = {An Exact Local Error Representation of Exponential Operator Splitting Methods for Evolutionary Problems and Applications to Linear {Schr{\"o}dinger} Equations in the Semi-Classical Regime},
+  journal = {BIT Numerical Mathematics},
+  year    = {2010},
+  volume  = {50},
+  number  = {4},
+  pages   = {729--749},
+  doi     = {10.1007/s10543-010-0282-4},
+  url     = {https://doi.org/10.1007/s10543-010-0282-4}
+}
+
+@article{EinkemmerOstermann2015,
+  author  = {Einkemmer, Lukas and Ostermann, Alexander},
+  title   = {Overcoming Order Reduction in Diffusion-Reaction Splitting. Part 1: {Dirichlet} Boundary Conditions},
+  journal = {SIAM Journal on Scientific Computing},
+  year    = {2015},
+  volume  = {37},
+  number  = {3},
+  pages   = {A1577--A1592},
+  doi     = {10.1137/140994204},
+  url     = {https://doi.org/10.1137/140994204}
+}
