@@ -17,17 +17,16 @@ npx skills add lrtfm/bibtex-manager --skill bibtex-manager -a codex
 
 ```text
 使用 $bibtex-manager，将 incoming.bib 合并到 /完整路径/library.bib。
-目标和合并操作已授权；先核对预演，无冲突后直接应用、保留备份并验证。
+核对预演后完成合并，保留备份并验证。
 ```
 
-只需预览时明确说明“不写入”。预演是内部检查，不要求每次再次确认；尚未解决的冲突或选择仍需处理。技能不赋予额外文件权限，也不自动联网验证元数据。
+只需预览时说明“不写入”。执行约定见 [SKILL.md](SKILL.md)，无需额外的授权套话；技能不赋予文件访问权限。
 
 ## 命令行
 
-在技能目录中运行，将路径替换为实际文件：
+在技能目录中运行，将路径替换为实际文件。预演包含输入结构校验：
 
 ```sh
-python3 scripts/bibtex_manager.py validate /path/to/incoming.bib
 python3 scripts/bibtex_manager.py merge --target /path/to/library.bib \
   --incoming /path/to/incoming.bib --diff
 python3 scripts/bibtex_manager.py merge --target /path/to/library.bib \
@@ -39,12 +38,11 @@ python3 scripts/bibtex_manager.py merge --target /path/to/library.bib \
 - 默认备份为 `library.bib.bak.<时间戳>`；仅在当前目标已有可靠恢复副本时考虑 `--no-backup`。无变化时不写入、不生成备份。
 - JSON 报告包含 `added`、`matched`、`comments_updated`、`unchanged`、`conflicts`。有冲突时整次写入中止，其他数组只是拟操作。退出码 `0` 表示成功（包括预览），`2` 表示冲突或错误。
 
-## 数据保护与边界
+## 行为与恢复
 
-- DOI 优先，其次标题与年份；标识冲突、引用键冲突或多重匹配会中止。根据证据和已有决定处理冲突，必要时使用编辑器或 JabRef；不要求所有判断都在界面中进行，也不自动覆盖或丢弃冲突条目。
-- 已有匹配条目只更新必要的 `comment`，其他字段不自动协调。保留未修改部分的原文、UTF-8 BOM、换行符和 JabRef 元数据；备注字段可能重新序列化。
-- `comment` 保存阅读笔记和长期有用的书目信息，操作日志另存。保留用户原备注，相同文本不重复追加；不进行语义去重。[阅读计划模板](references/reading-plan.md)仅按需使用。
-- 不下载 PDF、不检索 DOI，也不自动确认不同版本的关系。结构校验不等于完整 BibTeX/BibLaTeX 或 JabRef 兼容性验证；输入的顶层元数据不导入，宏需先展开或用兼容工具处理。示例书目用于演示，正式引用前应核实来源。
+- 按规范化 DOI 优先、标题与年份其次匹配；标识冲突、引用键冲突或多重匹配会中止。已有匹配条目仅更新 `comment`，不自动协调其他字段。
+- 保留未修改部分的原文、UTF-8 BOM、换行符和 JabRef 元数据；备注字段可能重新序列化。备注仅按文本包含关系去重，不做语义判断；阅读计划可用[模板](references/reading-plan.md)。
+- 不联网核验元数据，也不下载 PDF。结构校验不保证完整 BibTeX/BibLaTeX 或 JabRef 兼容性，输入的顶层元数据不导入；示例仅作演示。
 - 写入前检查目标是否变化，并以临时文件原子替换；这不是文件锁，应避免并发编辑。恢复前保留当前版本，关闭编辑器，核对备份后再恢复。
 
 ## 维护
