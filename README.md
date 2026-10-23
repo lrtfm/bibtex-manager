@@ -49,13 +49,12 @@ python3 scripts/bibtex_manager.py merge --target /path/to/library.bib \
 
 更新前保留自己的修改。克隆仓库可在工作区干净时用 `git pull --ff-only` 更新；安装副本再从已验证的开发版本同步。安装器管理的副本按其更新或卸载说明操作。
 
-核对实现或准备交付时运行：
+修改实现后可运行测试：
 
 ```sh
 python3 -m unittest discover -s tests -v
-python3 scripts/bibtex_manager.py validate examples/strang_splitting_references.bib
 ```
 
-需要打包时运行 `python3 scripts/package_release.py`，生成版本 ZIP 和 SHA-256；打包不等于发布。详见 [发布说明](PUBLISHING.md)。普通文献导入无需重跑工具测试。
+打包会自动运行测试和示例验证，无需重复执行。构建产物、版本标签及发布步骤见 [发布说明](PUBLISHING.md)；普通文献导入无需重跑工具测试。
 
 许可证：[MIT](LICENSE)。

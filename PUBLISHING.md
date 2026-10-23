@@ -1,42 +1,44 @@
-# 发布与维护
+# 发布说明
 
-仓库名：`lrtfm/bibtex-manager`。版本以 `VERSION` 为准，Git 标签使用 `v<版本>`。发布前更新 `CHANGELOG.md`，运行测试并审阅待提交文件。MIT 许可证已由维护者确认。
+沿用仓库 `lrtfm/bibtex-manager` 及现有 `origin`，无需重新初始化或创建远程。版本以 `VERSION` 为准，标签为 `v<版本>`；不要移动已发布标签。
 
-## 首次发布
+## 本地准备
 
-下面命令适用于尚未初始化、尚未创建 GitHub 仓库的源码目录；若仓库或远程已存在，不要重复创建，也不要强制推送。
+未发布的修改记录在 `CHANGELOG.md` 对应版本下；正式发布时将“未发布”改为发布日期。检查版本、变更记录和待提交差异后打包：
 
-```bash
-gh auth login --hostname github.com
-gh auth status
-python3 -m unittest discover -s tests -v
+```sh
 python3 scripts/package_release.py
-git init -b main
-git add .
-git diff --cached --stat
-git commit -m "Release bibtex-manager v0.1.0"
-gh repo create lrtfm/bibtex-manager --public --source=. --remote=origin --push
 ```
 
-推送后检查 Actions 成功，再建立版本标签及 GitHub Release：
+该命令自动运行测试、验证示例和技能头部，生成 `dist/bibtex-manager-<版本>.zip` 及 `.zip.sha256`，无需事先重复运行同一套测试。归档使用脚本中的文件白名单，不含 Git 历史、缓存或个人文献。
 
-```bash
-gh run list --repo lrtfm/bibtex-manager --limit 5
-# 将 RUN_ID 替换为对应提交的实际运行编号
-gh run watch RUN_ID --repo lrtfm/bibtex-manager --exit-status
-git tag -a v0.1.0 -m "bibtex-manager v0.1.0"
-git push origin v0.1.0
-gh release create v0.1.0 dist/bibtex-manager-0.1.0.zip \
-  dist/bibtex-manager-0.1.0.zip.sha256 --verify-tag \
-  --title "bibtex-manager v0.1.0" --notes-file CHANGELOG.md
+将最终源码和文档提交到本地，确保打包内容对应发布提交。本地提交和打包均不上传内容；未获推送或发布授权时到此为止。
+
+## 推送与发布
+
+以下仅用于已获授权的发布，需有可用的 GitHub CLI 登录。命令在仓库根目录运行，版本从文件读取：
+
+```sh
+release_version=$(cat VERSION)
+git push origin main
+gh run list --repo lrtfm/bibtex-manager --commit "$(git rev-parse HEAD)" --limit 5
 ```
 
-通过 `git ls-remote --heads origin main`、`gh release view v0.1.0` 及下面的发现命令核验公开结果：
+确认该提交的 CI 成功后，创建并推送对应标签，再检查标签触发的 CI。工作流会检查标签与 `VERSION` 是否一致：
 
-```bash
-npx skills add lrtfm/bibtex-manager --list
+```sh
+git tag -a "v${release_version}" -m "bibtex-manager v${release_version}"
+git push origin "v${release_version}"
 ```
 
-## 后续版本
+标签 CI 成功后，上传对应提交生成的归档及校验文件：
 
-更新 `VERSION`、变更记录及文档里的固定版本示例。运行测试与打包，提交并推送主分支，确认对应 CI 成功，再使用新版本标签重复上述发布操作。不要移动已发布标签。
+```sh
+gh release create "v${release_version}" \
+  "dist/bibtex-manager-${release_version}.zip" \
+  "dist/bibtex-manager-${release_version}.zip.sha256" \
+  --verify-tag --title "bibtex-manager v${release_version}" \
+  --notes-file CHANGELOG.md
+```
+
+完成后用 `gh release view "v${release_version}"` 核对版本及附件。CI 只测试和保存构建产物，不会自动创建 GitHub Release。
